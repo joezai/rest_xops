@@ -90,11 +90,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'rest_xops',
-        'HOST': 'localhost',
+        'HOST': '172.16.0.135',
         'USER': 'root',
-        'PASSWORD': '123456',
-        'PORT': '3306',
-        'OPTIONS': { 'init_command': 'SET storage_engine=INNODB;' }
+        'PASSWORD': 'joe123',
+        'PORT': '16303',
+        'OPTIONS': { "init_command":"SET default_storage_engine=INNODB;" }
     }
 }
 
@@ -132,10 +132,10 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 # redis 设置
-REDIS_HOST = 'localhost'
+REDIS_HOST = '172.16.0.135'
 REDIS_PORT = 16379
 REDIS_DB = 0
-REDIS_PASSWORD = None
+REDIS_PASSWORD = 'joe1234'
 
 # django-channels配置
 CHANNEL_LAYERS = {
