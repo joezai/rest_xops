@@ -43,7 +43,7 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/index/index'),
         name: '首页',
-        meta: { title: '首页', icon: 'index', noCache: true }
+        meta: { title: 'Dashboard', icon: 'index', noCache: true }
       }
     ]
   },

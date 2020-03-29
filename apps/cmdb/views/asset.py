@@ -13,6 +13,7 @@ from deployment.models import Project
 from rest_xops.basic import XopsResponse
 from rest_xops.code import *
 from django.db.models import Q
+from rest_framework import authentication
 
 
 class DeviceInfoViewSet(ModelViewSet):
@@ -29,7 +30,7 @@ class DeviceInfoViewSet(ModelViewSet):
     filter_fields = ('status','os_type', 'device_type', 'groups', 'businesses', 'labels')
     search_fields = ('hostname', 'os_type')
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     permission_classes = (RbacPermission,)
 
     def get_serializer_class(self):
@@ -61,5 +62,5 @@ class DeviceListView(ListAPIView):
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filter_fields = ('os_type',)
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     permission_classes = (IsAuthenticated,)

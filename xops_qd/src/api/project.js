@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function add(data) {
   return request({
-    url: 'api/projects/',
+    url: 'api/deployment/projects/',
     method: 'post',
     data
   })
@@ -10,21 +10,21 @@ export function add(data) {
 
 export function retrieve(id) {
   return request({
-    url: 'api/projects/' + id + '/',
+    url: 'api/deployment/projects/' + id + '/',
     method: 'get'
   })
 }
 
 export function del(id) {
   return request({
-    url: 'api/projects/' + id + '/',
+    url: 'api/deployment/projects/' + id + '/',
     method: 'delete'
   })
 }
 
 export function edit(id, data) {
   return request({
-    url: 'api/projects/' + id + '/',
+    url: 'api/deployment/projects/' + id + '/',
     method: 'put',
     data
   })
@@ -32,7 +32,7 @@ export function edit(id, data) {
 
 export function copy(data) {
   return request({
-    url: 'api/project/copy/',
+    url: 'api/deployment/project/copy/',
     method: 'post',
     data
   })

@@ -3,6 +3,7 @@
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from common.custom import RedisObj
+import asyncio
 
 class ConsoleMsgConsumer(AsyncWebsocketConsumer):
     async def connect(self):

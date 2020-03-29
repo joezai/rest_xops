@@ -9,6 +9,7 @@ from utils.shell_excu import connect_init
 from django.http import FileResponse
 from rest_framework.renderers import BaseRenderer
 import os
+from rest_framework import authentication
 
 class PassthroughRenderer(BaseRenderer):
     """
@@ -25,7 +26,7 @@ class AppLogView(APIView):
     '''
     perms_map = ({'*': 'admin'}, {'*': 'deploy_all'}, {'post': 'applog_list'})
     permission_classes = (RbacPermission,)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
 
     def post(self, request, format=None):
         if request.data['excu'] == 'list':

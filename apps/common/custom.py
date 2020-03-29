@@ -11,6 +11,7 @@ from rest_framework.views import exception_handler
 from errno import errorcode
 import celery, logging, redis
 from django.conf import settings
+from rest_framework import authentication
 
 error_logger = logging.getLogger('error')
 info_logger = logging.getLogger('info')
@@ -91,7 +92,7 @@ class TreeAPIView(ListAPIView):
     自定义树结构View
     '''
     serializer_class = TreeSerializer
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):

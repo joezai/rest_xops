@@ -22,6 +22,7 @@ from rest_xops.code import *
 from deployment.models import Project
 from cmdb.models import ConnectionInfo
 from django.db.models import Q
+from rest_framework import authentication
 import jwt
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -298,7 +299,7 @@ class UserViewSet(ModelViewSet):
     filter_fields = ('is_active',)
     search_fields = ('username', 'name', 'mobile', 'email')
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication, authentication.SessionAuthentication)
     permission_classes = (RbacPermission,)
 
     def get_serializer_class(self):
@@ -368,5 +369,5 @@ class UserListView(ListAPIView):
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filter_fields = ('name',)
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication, authentication.SessionAuthentication)
     permission_classes = (IsAuthenticated,)

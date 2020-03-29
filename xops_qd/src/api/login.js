@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(username, password) {
   return request({
-    url: 'auth/login/',
+    url: 'api/rbac/auth/login/',
     method: 'post',
     data: {
       username,
@@ -13,14 +13,14 @@ export function login(username, password) {
 
 export function getInfo() {
   return request({
-    url: 'auth/info/',
+    url: 'api/rbac/auth/info/',
     method: 'get'
   })
 }
 
 export function buildMenus() {
   return request({
-    url: 'auth/build/menus/',
+    url: 'api/rbac/auth/build/menus/',
     method: 'get'
   })
 }

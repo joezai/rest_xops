@@ -17,6 +17,7 @@ from rest_framework import status
 from ..models import DeviceScanInfo,DeviceInfo,DeviceAbstract,ConnectionAbstract,ConnectionInfo
 from ..serializers.scan_serializer import DeviceScanInfoSerializer,DeviceScanListSerializer
 from ..tasks import scan_execution
+from rest_framework import authentication
 
 error_logger = logging.getLogger('error')
 info_logger = logging.getLogger('info')
@@ -29,7 +30,7 @@ class ScanSettingView(APIView, ConfigFileMixin):
     perms_map = ({'*': 'admin'}, {'*': 'asset_all'})
     config_file = os.path.join(settings.YML_CONF_DIR, 'scan_settings.yml')
     permission_classes = (RbacPermission,)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
 
     def get(self, request, format=None):
         return Response(self.get_conf_content())
@@ -61,7 +62,7 @@ class ScanExcuView(APIView, CeleryTools):
     '''
     perms_map = ({'*': 'admin'}, {'*': 'scan_all'})
     permission_classes = (RbacPermission,)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
 
     def post(self, request, format=None):
         request_status = None
@@ -131,7 +132,7 @@ class DeviceScanInfoViewSet(ListModelMixin, DestroyModelMixin,RetrieveModelMixin
     filter_fields = ('status',)
     search_fields = ('sys_hostname', 'hostname', 'os_type')
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
 
     def get_serializer_class(self):
         # 根据请求类型动态变更serializer

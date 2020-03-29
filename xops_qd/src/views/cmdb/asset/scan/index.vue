@@ -71,7 +71,7 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = 'api/scan/devices/'
+      this.url = 'api/cmdb/scan/devices/'
       const sort = 'id'
       const query = this.query
       const value = query.value

@@ -2,7 +2,7 @@
   <div v-if="!item.hidden&&item.children" class="menu-wrapper">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <div style="background-color: #212529;">
-        <img :src="logo" style="height:50px;"/>
+        <img :src="logo" style="height:50px;width:100%"/>
       </div>
       <app-link :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
@@ -111,9 +111,9 @@ export default {
     },
     initLogo() {
       if (this.sidebar.opened) {
-        this.logo = require('../../../../assets/logo/logo1.png')
+        this.logo = require('../../../../assets/logo/logo1111.png')
       } else {
-        this.logo = require('../../../../assets/logo/logo2.png')
+        this.logo = require('../../../../assets/logo/logo2222.png')
       }
     }
   }

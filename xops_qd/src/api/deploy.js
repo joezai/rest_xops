@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function DeployExcu(data) {
   return request({
-    url: 'api/deploy/excu/',
+    url: 'api/deployment/deploy/excu/',
     method: 'post',
     data
   })
@@ -10,21 +10,21 @@ export function DeployExcu(data) {
 
 export function getVers(id) {
   return request({
-    url: 'api/deploy/ver/?id=' + id,
+    url: 'api/deployment/ddeploy/ver/?id=' + id,
     method: 'get'
   })
 }
 
 export function getRecords(id) {
   return request({
-    url: 'api/deploy/records/?project_id=' + id,
+    url: 'api/deployment/ddeploy/records/?project_id=' + id,
     method: 'get'
   })
 }
 
 export function ApplogExcu(data) {
   return request({
-    url: 'api/deploy/applog/',
+    url: 'api/deployment/ddeploy/applog/',
     method: 'post',
     data
   })
@@ -38,7 +38,7 @@ export function ApplogExcu(data) {
 // }
 export function ApplogDown(data) {
   return request({
-    url: 'api/deploy/applog/',
+    url: 'api/deployment/ddeploy/applog/',
     method: 'post',
     data,
     responseType: 'blob'

@@ -74,7 +74,7 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = 'api/dicts/'
+      this.url = 'api/rbac/dicts/'
       const sort = 'id'
       const query = this.query
       const value = query.value

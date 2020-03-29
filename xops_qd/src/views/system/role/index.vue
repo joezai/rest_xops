@@ -119,7 +119,7 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = 'api/roles/'
+      this.url = 'api/rbac/roles/'
       const sort = 'id'
       const query = this.query
       const value = query.value

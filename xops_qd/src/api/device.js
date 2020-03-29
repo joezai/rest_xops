@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getDevices() {
   return request({
-    url: 'api/devices/',
+    url: 'api/cmdb/devices/',
     method: 'get'
   })
 }
@@ -10,12 +10,12 @@ export function getDevices() {
 export function getDeviceList(os_type) {
   if (os_type) {
     return request({
-      url: 'api/device/list/?os_type=' + os_type,
+      url: 'api/cmdb/device/list/?os_type=' + os_type,
       method: 'get'
     })
   } else {
     return request({
-      url: 'api/device/list/',
+      url: 'api/cmdb/device/list/',
       method: 'get'
     })
   }
@@ -23,7 +23,7 @@ export function getDeviceList(os_type) {
 
 export function add(data) {
   return request({
-    url: 'api/devices/',
+    url: 'api/cmdb/devices/',
     method: 'post',
     data
   })
@@ -31,21 +31,21 @@ export function add(data) {
 
 export function retrieve(id) {
   return request({
-    url: 'api/devices/' + id + '/',
+    url: 'api/cmdb/devices/' + id + '/',
     method: 'get'
   })
 }
 
 export function del(id) {
   return request({
-    url: 'api/devices/' + id + '/',
+    url: 'api/cmdb/devices/' + id + '/',
     method: 'delete'
   })
 }
 
 export function edit(id, data) {
   return request({
-    url: 'api/devices/' + id + '/',
+    url: 'api/cmdb/devices/' + id + '/',
     method: 'put',
     data
   })

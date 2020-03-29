@@ -79,7 +79,7 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = 'api/devices/'
+      this.url = 'api/cmdb/devices/'
       const sort = 'id'
       const query = this.query
       const value = query.value

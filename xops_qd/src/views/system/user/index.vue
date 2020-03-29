@@ -77,7 +77,7 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = 'api/users/'
+      this.url = 'api/rbac/users/'
       const sort = 'id'
       const query = this.query
       const value = query.value

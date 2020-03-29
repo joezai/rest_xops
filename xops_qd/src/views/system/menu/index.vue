@@ -89,7 +89,7 @@ export default {
     parseTime,
     checkPermission,
     beforeInit() {
-      this.url = 'api/menus/'
+      this.url = 'api/rbac/menus/'
       const sort = 'sort'
       const query = this.query
       const value = query.value

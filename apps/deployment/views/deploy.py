@@ -19,6 +19,7 @@ from common.custom import RedisObj
 from django.conf import settings
 from django.http import FileResponse
 from ..tasks import local_tailf
+from rest_framework import authentication
 
 error_logger = logging.getLogger('error')
 info_logger = logging.getLogger('info')
@@ -35,14 +36,14 @@ class DeployRecordViewSet(ReadOnlyModelViewSet):
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filter_fields = ('project_id', 'status',)
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     permission_classes = (RbacPermission,)
 
 
 class VersionView(APIView):
     perms_map = ({'*': 'admin'}, {'*': 'deploy_all'}, {'get': 'deploy_excu'})
     permission_classes = (RbacPermission,)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     _path = settings.WORKSPACE
 
     def get_tag(self, path):
@@ -81,7 +82,7 @@ class DeployView(APIView):
     '''
     perms_map = ({'*': 'admin'}, {'*': 'deploy_all'}, {'post': 'deploy_excu'})
     permission_classes = (RbacPermission,)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     _path = settings.WORKSPACE
 
     def repo_init(self, id):

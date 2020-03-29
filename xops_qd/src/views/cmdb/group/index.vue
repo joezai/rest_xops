@@ -106,7 +106,7 @@ export default {
       this.table_show = false
     },
     beforeInit() {
-      this.url = 'api/groups/'
+      this.url = 'api/cmdb/groups/'
       const sort = 'id'
       const query = this.query
       const value = query.value

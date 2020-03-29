@@ -12,6 +12,7 @@ from django.db.models import Q
 from rest_xops.code import *
 from rest_xops.basic import XopsResponse
 import copy
+from rest_framework import authentication
 
 
 class ProjectViewSet(ModelViewSet):
@@ -29,7 +30,7 @@ class ProjectViewSet(ModelViewSet):
     filter_fields = ('environment', 'status',)
     search_fields = ('name',)
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     permission_classes = (RbacPermission,)
 
     def get_serializer_class(self):
@@ -54,7 +55,7 @@ class ProjectViewSet(ModelViewSet):
 class ProjectCopy(APIView):
     perms_map = ({'*': 'admin'}, {'*': 'project_all'})
     permission_classes = (RbacPermission,)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
 
     def post(self, request, format=None):
         if request.data['id']:

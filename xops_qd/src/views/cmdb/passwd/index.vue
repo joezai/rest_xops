@@ -71,7 +71,7 @@ export default {
   methods: {
     checkPermission,
     beforeInit() {
-      this.url = 'api/connections/'
+      this.url = 'api/cmdb/connections/'
       const sort = 'id'
       const query = this.query
       const value = query.value

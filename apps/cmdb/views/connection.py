@@ -9,6 +9,7 @@ from ..models import ConnectionInfo
 from rest_xops.basic import XopsResponse
 from rest_xops.code import *
 from django.db.models import Q
+from rest_framework import authentication
 
 class ConnectionInfoViewSet(ModelViewSet):
     '''
@@ -22,7 +23,7 @@ class ConnectionInfoViewSet(ModelViewSet):
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('hostname',)
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     permission_classes = (RbacPermission,ObjPermission)
 
     def create(self, request, *args, **kwargs):

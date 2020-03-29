@@ -56,7 +56,7 @@ export default {
   methods: {
     checkPermission,
     beforeInit() {
-      this.url = 'api/projects/'
+      this.url = 'api/deployment/projects/'
       const sort = 'id'
       const query = this.query
       const value = query.value

@@ -108,7 +108,7 @@ export default {
       this.table_show = false
     },
     beforeInit() {
-      this.url = 'api/labels/'
+      this.url = 'api/cmdb/labels/'
       const sort = 'id'
       const query = this.query
       const value = query.value

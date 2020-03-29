@@ -108,7 +108,7 @@ export default {
       this.table_show = false
     },
     beforeInit() {
-      this.url = 'api/businesses/'
+      this.url = 'api/cmdb/businesses/'
       const sort = 'id'
       const query = this.query
       const value = query.value

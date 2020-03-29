@@ -6,6 +6,7 @@ from ..serializers.group_serializer import DeviceGroupSerializer
 from common.custom import CommonPagination, RbacPermission
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework import authentication
 
 
 class DeviceGroupViewSet(ModelViewSet):
@@ -20,5 +21,5 @@ class DeviceGroupViewSet(ModelViewSet):
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('name',)
     ordering_fields = ('id',)
-    authentication_classes = (JSONWebTokenAuthentication,)
+    authentication_classes = (JSONWebTokenAuthentication,authentication.SessionAuthentication)
     permission_classes = (RbacPermission,)
