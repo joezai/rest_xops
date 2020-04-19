@@ -7,8 +7,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 urlpatterns = [
     url(r'^api/rbac/', include('rbac.urls','rbac')),
-    url(r'^api/deployment/', include('deployment.urls','deployment')),
-    url(r'^api/cmdb/', include('cmdb.urls','cmdb')),
+    url(r'^api/cmdb/', include('cmdb.urls')),
     url('docs/', include_docs_urls()),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^login', obtain_jwt_token),

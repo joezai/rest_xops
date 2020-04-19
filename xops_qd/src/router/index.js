@@ -50,7 +50,7 @@ export const constantRouterMap = [
   {
     path: '/user',
     component: Layout,
-    hidden: true,
+    hidden: true, // 不显示在侧边栏
     redirect: 'noredirect',
     children: [
       {

@@ -51,6 +51,7 @@ export default {
     }
   },
   created() {
+    // 查看本地是否有记录信息
     this.getCookie()
   },
   methods: {
@@ -74,6 +75,7 @@ export default {
             Cookies.remove('username')
             Cookies.remove('rememberMe')
           }
+          // 调用store中的login函数
           this.$store.dispatch('Login', user).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })

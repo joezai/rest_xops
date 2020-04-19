@@ -1,93 +1,87 @@
-from datetime import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
 from simple_history.models import HistoricalRecords
+from datetime import datetime
 
 User = get_user_model()
-
-class AbstractMode(models.Model):
-    pid = models.ForeignKey(
-        'self', blank=True, null=True, on_delete=models.SET_NULL, related_name='child'
-    )
-
-    class Meta:
-        abstract = True
-
-class Dict(AbstractMode):
-    key = models.CharField(max_length=80, verbose_name='键')
-    value = models.CharField(max_length=80, verbose_name='值')
-    desc = models.CharField(max_length=255, blank=True, null=True, verbose_name='备注')
-
-    class Meta:
-        verbose_name = '字典'
-        verbose_name_plural = verbose_name
 
 class TimeAbstract(models.Model):
     add_time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
     modify_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
-
     class Meta:
         abstract = True
 
-class DeviceAbstract(models.Model):
-    status = models.CharField(max_length=10, blank=True, default='', verbose_name='状态')
-    sys_hostname = models.CharField(max_length=100, blank=True, default='', verbose_name='主机名')
-    mac_address = models.CharField(max_length=150, blank=True, default='', verbose_name='MAC地址')
-    sn_number = models.CharField(max_length=150, blank=True, default='', verbose_name='SN号码')
-    os_type = models.CharField(max_length=50, blank=True, default='', verbose_name='系统类型')
-    os_version = models.CharField(max_length=100, blank=True, default='', verbose_name='系统版本')
-    device_type = models.CharField(max_length=50, blank=True, default='', verbose_name='设备类型')
-    device_model = models.CharField(max_length=150, blank=True, default='', verbose_name='设备型号')
-
-    class Meta:
-        abstract = True
-
-class ConnectionAbstract(models.Model):
-    hostname = models.CharField(max_length=80, verbose_name='IP/域名')
-    auth_type = models.CharField(max_length=30, default='',verbose_name='认证类型')
-    port = models.IntegerField(blank=True, default=0, verbose_name='端口')
-    username = models.CharField(max_length=50, blank=True, default='', verbose_name='用户名/key')
-    password = models.CharField(max_length=80, blank=True, default='', verbose_name='密码')
-
-
-    class Meta:
-        abstract = True
-
-class ConnectionInfo(ConnectionAbstract, TimeAbstract):
-    is_public = models.BooleanField(default=False, verbose_name="是否公开")
-    desc = models.CharField(max_length=150, blank=True, null=True, verbose_name='备注')
-    uid = models.ForeignKey(User, null=True, blank=True, default=1, on_delete=models.SET_NULL, verbose_name='关联用户')
-
-    class Meta:
-        verbose_name = '连接信息'
-        verbose_name_plural = verbose_name
-
-class DeviceScanInfo(DeviceAbstract, ConnectionAbstract, TimeAbstract):
+class DeviceGroup(TimeAbstract):
     '''
-    储存扫描成功后的设备信息临时表
+    资产分组
     '''
-    error_message = models.TextField(max_length=150, blank=True, default='', verbose_name='错误信息')
-
+    group_name = models.CharField(max_length=100,verbose_name='分组名称',help_text="分组名称")
+    groupdesc = models.CharField(max_length=200,verbose_name="分组描述",help_text="分组描述")
+    change_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    history = HistoricalRecords(excluded_fields=['add_time', 'modify_time'])
     class Meta:
-        verbose_name = '扫描信息'
+        verbose_name = "资产分组"
         verbose_name_plural = verbose_name
+    @property
+    def _history_user(self):
+        return self.changed_by
 
-class DeviceInfo(AbstractMode, DeviceAbstract, TimeAbstract):
+    @_history_user.setter
+    def _history_user(self, value):
+        self.changed_by = value
+    def __str__(self):
+        return self.group_name
+
+class DeviceInfo(TimeAbstract):
     '''
     资产信息表
     '''
-    auth_type = models.CharField(max_length=30, default='', verbose_name='认证类型')
-    hostname = models.CharField(max_length=50, verbose_name='IP/域名')
-    network_type = models.IntegerField(blank=True, null=True, verbose_name='网络类型')
-    leader = models.CharField(max_length=50,blank=True, null=True, verbose_name='责任人')
-    buy_date = models.DateField(default=datetime.now, verbose_name="购买日期")
-    warranty_date = models.DateField(default=datetime.now, verbose_name="到保日期")
-    desc = models.TextField(blank=True, default='', verbose_name='备注信息')
-    changed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    businesses = models.ManyToManyField("Business", blank=True, verbose_name="业务")
-    groups = models.ManyToManyField("DeviceGroup", blank=True, verbose_name="设备组")
-    labels = models.ManyToManyField("Label", blank=True, verbose_name="标签")
-    history = HistoricalRecords(excluded_fields=['add_time', 'modify_time', 'pid'])
+    device_type_choice = (
+        ('主站', "主站"),
+        ('备站', "备站"),
+        ('主库', "主库"),
+        ('从库', "从库"),
+        ('主站主库', "主站主库"),
+        ('备站从库', "备份从库")
+    )
+    idc_location_choice = (
+        ("广东", "广东"),
+        ("武汉", "武汉"),
+        ("上海", "上海")
+    )
+    online_state_choice = (
+        ("未上线", "未上线"),
+        ("已上线", "已上线"),
+        ("待迁移", "待迁移"),
+        ("待回收", "待回收")
+    )
+    testapi_state_choice= (
+        ("未开通", "未开通"),
+        ("已开通", "已开通")
+    )
+    device_type = models.CharField(default='主站', choices=device_type_choice, max_length=100, verbose_name="资产类型",
+                                      help_text=u"资产类型: 1(主站),2(备站),3(主库),4(从库),5(主站主库),6(备份从库)")
+    customer = models.CharField(max_length=100,verbose_name='客户',help_text="客户")
+    customer_token = models.CharField(max_length=30,verbose_name='商户编码',help_text="商户编码")
+    main_record = models.CharField(max_length=100,verbose_name='主解析记录',help_text="主解析记录")
+    sub_record = models.CharField(max_length=100,verbose_name='副解析记录',help_text="副解析记录")
+    cdn_record = models.CharField(max_length=100,verbose_name='cdn解析记录',help_text="cdn解析记录")
+    main_ip = models.GenericIPAddressField(null=False,blank=False,verbose_name='主ip',help_text="主ip")
+    back_ip = models.GenericIPAddressField(null=False,blank=False,verbose_name='副ip',help_text="副ip")
+    apapa_ip = models.GenericIPAddressField(null=True,verbose_name='APAPAip',help_text="APAPAip")
+    cdn_ip = models.GenericIPAddressField(null=True,verbose_name='CDNip',help_text="CDNip")
+    lan_ip = models.GenericIPAddressField(null=True,verbose_name='内网ip',help_text="内网ip")
+    idc_location = models.CharField(default="广东", choices=idc_location_choice, max_length=10, verbose_name="服务器位置",
+                                      help_text=u"服务器位置: 1(广东),2(武汉),3(上海)")
+    online_state = models.CharField(default="未上线", choices=online_state_choice, max_length=10, verbose_name="上线状态",
+                                       help_text=u"上线状态: 1(未上线),2(已上线),3(待迁移),4(待回收)")
+    testapi_state = models.CharField(default="未开通", choices=testapi_state_choice, max_length=10, verbose_name="测试api开通状态",
+                                        help_text=u"测试api开通状态: 1(未开通),2(已开通)")
+    creater = models.CharField(max_length=30,verbose_name='搭建人',help_text="搭建人")
+    device_group = models.ForeignKey(DeviceGroup,on_delete=models.CASCADE,verbose_name='资产分组',related_name="group",help_text="资产分组")
+    device_desc = models.TextField(blank=True, default='', verbose_name='资产备注',help_text="资产备注")
+    changed_by = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL,help_text="修改人")
+    history = HistoricalRecords(excluded_fields=['add_time', 'modify_time'])
 
     class Meta:
         verbose_name = '设备信息'
@@ -100,34 +94,5 @@ class DeviceInfo(AbstractMode, DeviceAbstract, TimeAbstract):
     @_history_user.setter
     def _history_user(self, value):
         self.changed_by = value
-
-class Business(TimeAbstract):
-    name = models.CharField(max_length=50, verbose_name='业务名称')
-    desc = models.CharField(max_length=255, blank=True, null=True, verbose_name='备注')
-
-    class Meta:
-        verbose_name = '业务'
-        verbose_name_plural = verbose_name
-
-class DeviceGroup(TimeAbstract):
-    name = models.CharField(max_length=50, verbose_name='组名')
-    alias = models.CharField(default='', max_length=100, verbose_name='别名')
-    desc = models.CharField(max_length=255, blank=True, null=True, verbose_name='备注')
-
-    class Meta:
-        verbose_name = '设备组'
-        verbose_name_plural = verbose_name
-
-class Label(TimeAbstract):
-    name = models.CharField(max_length=50, verbose_name='标签名')
-    desc = models.CharField(max_length=255, blank=True, null=True, verbose_name='备注')
-
-    class Meta:
-        verbose_name = '标签'
-        verbose_name_plural = verbose_name
-
-
-class DeviceFile(TimeAbstract):
-    device = models.ForeignKey('DeviceInfo', blank=True, null=True, on_delete=models.SET_NULL, verbose_name='设备')
-    file_content = models.FileField(upload_to="conf/asset_file/%Y/%m", null=True, blank=True, verbose_name="资产文件")
-    upload_user = models.CharField(max_length=20, verbose_name="上传人")
+    def __str__(self):
+        return self.customer_token

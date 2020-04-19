@@ -10,7 +10,8 @@ const user = {
     email: '',
     avatar: '',
     createTime: '',
-    roles: []
+    roles: [],
+    rolename: []
   },
 
   mutations: {
@@ -34,6 +35,9 @@ const user = {
     },
     SET_EMAIL: (state, email) => {
       state.email = email
+    },
+    SET_ROLE_NAME: (state, rolename) => {
+      state.rolename = rolename
     }
   },
 
@@ -45,6 +49,7 @@ const user = {
       const rememberMe = userInfo.rememberMe
       return new Promise((resolve, reject) => {
         login(username, password).then(res => {
+          // 将token写到state中
           setToken(res.detail.token, rememberMe)
           commit('SET_TOKEN', res.detail.token)
           resolve()
@@ -54,7 +59,7 @@ const user = {
       })
     },
 
-    // 获取用户信息
+    // 获取用户信息是在路由跳转时由permission控制调用的
     GetInfo({ commit }) {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
@@ -62,6 +67,7 @@ const user = {
           commit('SET_ROLES', res.detail.roles)
           commit('SET_NAME', res.detail.username)
           commit('SET_AVATAR', res.detail.avatar)
+          commit('SET_ROLE_NAME', res.detail.rolename)
           commit('SET_EMAIL', res.detail.email)
           commit('SET_CREATE_TIME', parseTime(res.detail.createTime))
           resolve(res)

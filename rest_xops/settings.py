@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django_filters',
     'rbac',
     'cmdb',
-    'deployment',
 
 ]
 

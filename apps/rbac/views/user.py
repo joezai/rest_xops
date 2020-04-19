@@ -19,8 +19,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_xops.settings import SECRET_KEY
 from operator import itemgetter
 from rest_xops.code import *
-from deployment.models import Project
-from cmdb.models import ConnectionInfo
 from django.db.models import Q
 from rest_framework import authentication
 import jwt
@@ -59,10 +57,21 @@ class UserInfoView(APIView):
                 return perms_list
         except AttributeError:
             return None
+    @classmethod
+    def get_role_name(self,request):
+        try:
+            if request.user:
+                role_name = []
+                for i in request.user.roles.values('name').distinct():
+                    role_name.append(i['name'])
+                return role_name
+        except:
+            return None
 
     def get(self, request):
         if request.user.id is not None:
             perms = self.get_permission_from_role(request)
+            role_name = self.get_role_name(request)
             data = {
                 'id': request.user.id,
                 'username': request.user.username,
@@ -70,7 +79,8 @@ class UserInfoView(APIView):
                 'email': request.user.email,
                 'is_active': request.user.is_active,
                 'createTime':request.user.date_joined,
-                'roles': perms
+                'roles': perms,
+                'rolename': role_name
             }
             return XopsResponse(data, status=OK)
         else:
@@ -323,15 +333,6 @@ class UserViewSet(ModelViewSet):
         # 删除用户时删除其他表关联的用户
         instance = self.get_object()
         id = str(kwargs['pk'])
-        projects = Project.objects.filter(
-            Q(user_id__icontains=id + ',') | Q(user_id__in=id) | Q(user_id__endswith=',' + id)).values()
-        if projects:
-            for project in projects:
-                user_id = project['user_id'].split(',')
-                user_id.remove(id)
-                user_id = ','.join(user_id)
-                Project.objects.filter(id=project['id']).update(user_id=user_id)
-        ConnectionInfo.objects.filter(uid_id=id).delete()
         self.perform_destroy(instance)
         return XopsResponse(status=NO_CONTENT)
 
