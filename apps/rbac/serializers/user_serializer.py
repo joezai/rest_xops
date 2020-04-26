@@ -38,6 +38,10 @@ class UserModifySerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("手机号码不合法")
         return mobile
 
+class UserAvatarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ('image','id')
 
 class UserCreateSerializer(serializers.ModelSerializer):
     '''
@@ -48,7 +52,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['id', 'username', 'name', 'mobile', 'email', 'department', 'position', 'is_active', 'roles',
+        fields = ['id', 'username', 'name', 'mobile', 'email', 'image', 'department', 'position', 'is_active', 'roles',
                   'password']
 
     def validate_username(self, username):

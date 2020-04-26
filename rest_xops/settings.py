@@ -15,6 +15,7 @@ import os,sys,datetime
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+GEOIP_PATH =os.path.join('apps/geoip')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -31,22 +32,27 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'simple_history',
     'channels',
     'corsheaders',  # 跨域
     'django_filters',
     'rbac',
     'cmdb',
+    'geoip2',
+    'modellog',
 
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',#跨域
+    'simple_history.middleware.HistoryRequestMiddleware', #操作记录
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,7 +60,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'simple_history.middleware.HistoryRequestMiddleware', #操作记录
 ]
 
 # CORS跨域设置
@@ -211,20 +216,21 @@ LOGGING = {
         }
 
     },
-        'loggers': {
-            'info': {
-                'handlers': ['default'],
+    'loggers': {
+        'django': {
+                'handlers': ['default','error'],
                 'level': 'INFO',
                 'propagate': True,
             },
-            'warn':{
-                'handlers': ['default'],
+            'django_request':{
+                'handlers': ['default','error'],
                 'level': 'WARNING',
                 'propagate': True,
             },
-            'error': {
-                'handlers': ['error'],
+            'django.db.backends': {
+                'handlers': ['default','error'],
                 'level': 'ERROR',
+                'propagate': True,
             }
     }
 

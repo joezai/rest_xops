@@ -5,6 +5,7 @@
         <div class="avatar-content">
           <el-upload
             :show-file-list="false"
+            :http-request="upLoad"
             :on-success="handleSuccess"
             :on-error="handleError"
             :headers="headers"
@@ -45,6 +46,7 @@ import { mapGetters } from 'vuex'
 import updatePass from './center/updatePass'
 import { getToken } from '@/utils/auth'
 import store from '@/store'
+import axios from 'axios'
 export default {
   name: 'Center',
   components: { updatePass },
@@ -81,6 +83,19 @@ export default {
         type: 'error',
         duration: 2500
       })
+    },
+    upLoad(file) {
+      const formData = new FormData()
+      formData.append('image', file.file)
+      axios.put('http://127.0.0.1:8000/api/rbac/avatars/' + this.id + '/', formData, {
+        headers: this.headers
+      }).then((res) => {
+        console.log('头像上传成功')
+        this.$store.dispatch('GetInfo')
+      }).catch(function(error) {
+        console.log(error)
+      }
+      )
     }
   }
 }

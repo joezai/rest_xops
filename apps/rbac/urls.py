@@ -8,6 +8,7 @@ router.register(r'organizations', organization.OrganizationViewSet, basename="or
 router.register(r'menus', menu.MenuViewSet, basename="menus")
 router.register(r'permissions', permission.PermissionViewSet, basename="permissions")
 router.register(r'roles', role.RoleViewSet, basename="roles")
+router.register(r'avatars', user.UserAvatarView, basename="avatars")
 app_name = 'rbac'
 
 urlpatterns = [

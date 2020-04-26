@@ -47,6 +47,10 @@ export default {
     return {
       columns: [
         {
+          text: '分组id',
+          value: 'id'
+        },
+        {
           text: '分组名称',
           value: 'group_name'
         },

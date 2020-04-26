@@ -5,7 +5,7 @@ from invoke import Responder, Result
 from utils.websocket_tail import Tailf
 from io import StringIO
 import logging, os
-from cmdb.models import DeviceInfo,ConnectionInfo
+from cmdb.models import DeviceInfo
 
 error_logger = logging.getLogger('error')
 info_logger = logging.getLogger('info')

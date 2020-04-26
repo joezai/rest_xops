@@ -1,5 +1,5 @@
 from rest_framework import viewsets,mixins
-from ..serializers.cmdb_serializer import DeviceGroupSerializer,DeviceGroupListSerializer,DeviceCreateSerializer
+from ..serializers.cmdb_serializer import DeviceGroupSerializer,DeviceGroupListSerializer,DeviceCreateSerializer,DeviceInfoDetailSerializer
 from ..models import DeviceInfo,DeviceGroup
 from common.custom import CommonPagination, RbacPermission
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -42,7 +42,11 @@ class DeviceInfoViewSet(viewsets.ModelViewSet):
     queryset = DeviceInfo.objects.all()
     pagination_class = CommonPagination
     filter_backends = (SearchFilter, OrderingFilter)
-    search_fields = ("device_type","customer_token","main_ip","idc_location","online_state","testapi_state")
+    search_fields = ("device_type","customer_token","main_ip","back_ip","apapa_ip","cdn_ip","idc_location","online_state","testapi_state")
     ordering_fields = ('id',)
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     permission_classes = (RbacPermission,)
+    def get_serializer_class(self):
+        if self.action in ["list","retrieve"]:
+            return DeviceInfoDetailSerializer
+        return DeviceCreateSerializer

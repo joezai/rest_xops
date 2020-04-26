@@ -114,3 +114,30 @@ class DeviceGroupListSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeviceGroup
         fields = ("id","group_name","groupdesc","group")
+
+class DeviceInfoDetailSerializer(serializers.ModelSerializer):
+    # device_group = DeviceGroupSerializer(many=False)
+    class Meta:
+        model = DeviceInfo
+        fields = "__all__"
+
+# class DeviceInfoUpdateSerializer(serializers.ModelSerializer):
+#     device_group = serializers.CharField(max_length=100)
+#     class Meta:
+#         model = DeviceInfo
+#         fields = "__all__"
+#     def create(self, validated_data):
+#         group_name = validated_data['device_group'].group_name
+#         existed = DeviceInfo.objects.filter(group_name=group_name)
+#         if existed:
+#             validated_data['device_group'] = existed[0].id
+#             DeviceInfo.objects.create(**validated_data)
+#         else:
+#             serializers.ValidationError("分组不存在")
+#         return existed
+#     def update(self, instance, validated_data):
+#         group_name = validated_data['device_group'].group_name
+#         group_id = DeviceInfo.objects.filter(group_name=group_name)[0].id
+#         instance.device_group = group_id
+#         instance.save()
+#         return instance

@@ -2,7 +2,7 @@
 # @Author  : xufqing
 from ..models import UserProfile, Menu
 from django.contrib.auth.hashers import check_password
-from ..serializers.user_serializer import UserListSerializer, UserCreateSerializer, UserModifySerializer, UserInfoListSerializer
+from ..serializers.user_serializer import UserListSerializer, UserCreateSerializer, UserModifySerializer, UserInfoListSerializer, UserAvatarSerializer
 from ..serializers.menu_serializer import MenuSerializer
 from rest_framework.generics import ListAPIView
 from common.custom import CommonPagination, RbacPermission
@@ -19,6 +19,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_xops.settings import SECRET_KEY
 from operator import itemgetter
 from rest_xops.code import *
+from rest_framework import viewsets
+from rest_framework import mixins
 from django.db.models import Q
 from rest_framework import authentication
 import jwt
@@ -372,3 +374,10 @@ class UserListView(ListAPIView):
     ordering_fields = ('id',)
     authentication_classes = (JSONWebTokenAuthentication, authentication.SessionAuthentication)
     permission_classes = (IsAuthenticated,)
+
+class UserAvatarView(mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    serializer_class = UserAvatarSerializer
+    authentication_classes = (JSONWebTokenAuthentication, authentication.SessionAuthentication)
+    permission_classes = (RbacPermission,)
+    def get_queryset(self):
+        return UserProfile.objects.filter(username=self.request.user)
