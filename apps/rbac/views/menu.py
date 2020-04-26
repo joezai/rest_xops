@@ -7,9 +7,10 @@ from common.custom import CommonPagination,RbacPermission,TreeAPIView
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import authentication
+from modellog.mixins import LoggingViewSetMixin
 
 
-class MenuViewSet(ModelViewSet, TreeAPIView):
+class MenuViewSet(LoggingViewSetMixin, ModelViewSet, TreeAPIView):
     '''
     菜单管理：增删改查
     '''

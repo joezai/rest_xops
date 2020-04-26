@@ -24,6 +24,7 @@ from rest_framework import mixins
 from django.db.models import Q
 from rest_framework import authentication
 import jwt
+from modellog.mixins import LoggingViewSetMixin
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -298,7 +299,7 @@ class UserBuildMenuView(APIView):
             return XopsResponse('请登录后访问!',status=FORBIDDEN)
 
 
-class UserViewSet(ModelViewSet):
+class UserViewSet(LoggingViewSetMixin, ModelViewSet):
     '''
     用户管理：增删改查
     '''

@@ -6,3 +6,9 @@ export function LogSentryList() {
     method: 'get'
   })
 }
+export function LogSentryDetail(id) {
+  return request({
+    url: '/logs/logsentrys/' + id,
+    method: 'get'
+  })
+}

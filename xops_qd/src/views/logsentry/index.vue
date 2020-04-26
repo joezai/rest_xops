@@ -103,9 +103,8 @@ export default {
       this.listQuery.pagesize = this.pagesize
       this.listQuery.page = this.page
       LogSentryList(this.listQuery).then(response => {
-        // console.log(response)
-        this.list = response.data.results
-        this.total = response.data.count
+        this.list = response.results
+        this.total = response.count
         this.listLoading = false
       })
     },

@@ -10,9 +10,10 @@ from rest_framework.views import APIView
 from rest_xops.basic import XopsResponse
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import authentication
+from modellog.mixins import LoggingViewSetMixin
 
 
-class OrganizationViewSet(ModelViewSet, TreeAPIView):
+class OrganizationViewSet(LoggingViewSetMixin, ModelViewSet, TreeAPIView):
     '''
     组织机构：增删改查
     '''

@@ -6,8 +6,9 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
+from modellog.mixins import LoggingViewSetMixin
 
-class DeviceGroupViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class DeviceGroupViewSet(LoggingViewSetMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
     '''
     资产分组增删改查
     list:
@@ -31,7 +32,7 @@ class DeviceGroupViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixin
             return DeviceGroupListSerializer
         return DeviceGroupSerializer
 
-class DeviceInfoViewSet(viewsets.ModelViewSet):
+class DeviceInfoViewSet(LoggingViewSetMixin, viewsets.ModelViewSet):
     """
     资产信息表增删改查
     """

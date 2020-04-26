@@ -8,9 +8,10 @@ from common.custom import CommonPagination, RbacPermission
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import authentication
+from modellog.mixins import LoggingViewSetMixin
 
 
-class RoleViewSet(ModelViewSet):
+class RoleViewSet(LoggingViewSetMixin, ModelViewSet):
     '''
     角色管理：增删改查
     '''
