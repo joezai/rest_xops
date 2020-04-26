@@ -21,7 +21,7 @@ class LoggingBaseMethodMixin:
         """
         pass
 
-
+# 其他api调用增删改方法时通过调用LoggingViewSetMixin重写create，update，delete方法
 class LoggingViewSetMixin:
     """
     日志记录的中间件
