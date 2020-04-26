@@ -28,27 +28,3 @@ export const ActionOptions = [
   { key: 3, display_name: '删除' }
 ]
 
-export const assetOptions = [
-  { key: '生产主机', value: 'prod' },
-  { key: '中心主机', value: 'center' },
-  { key: '手机主机', value: 'mobile' },
-  { key: '棋牌主机', value: 'chess' },
-  { key: '监控主机', value: 'monitor' },
-  { key: '采集主机', value: 'collect' },
-  { key: 'CDN节点', value: 'cdn' },
-  { key: '全部', value: '' }
-]
-
-export const statusOptions = [
-  { key: '未上线', value: 0 },
-  { key: '已上线', value: 1 },
-  { key: '全部', value: '' }
-]
-export const hostTypeOptions = [
-  { key: '主站主库', value: 'zzzk' },
-  { key: '备份从库', value: 'bfck' },
-  { key: '主站', value: 'zz' },
-  { key: '备份', value: 'bf' },
-  { key: '主库', value: 'zk' },
-  { key: '从库', value: 'ck' }
-]
