@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function LogSentryList() {
+export function LogSentryList(data) {
   return request({
-    url: 'logs/logsentrys/',
-    method: 'get'
+    url: '/logs/logsentrys/',
+    method: 'get',
+    params: data
   })
 }
 export function LogSentryDetail(id) {
